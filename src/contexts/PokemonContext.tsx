@@ -1,26 +1,18 @@
 import React, { ReactElement } from "react";
 
 import api from "../services/api";
+import Utils from "../services/Utils";
+import PokeApi from "../services/PokeApi";
 import CharizardMock from "../services/CharizardMock";
+import PokemonListMock from "../services/PokemonListMock";
 
-export interface IPokemon {
-  name: string;
-  price: number;
-  isShiny: boolean;
-  sprites: Array<string>;
-}
-
-export const PokemonContext = React.createContext({
-  getAllPokemon: () => {},
-});
+import { IPokemon, IPokemonInfoAPI, IPokemonContext } from "./Pokemon";
 
 interface IPokemonProps {
   children: ReactElement;
 }
 
-export interface IPokemonContext {
-    getAllPokemon(page?: number) : Promise<IPokemon[]>;
-}
+export const PokemonContext = React.createContext<IPokemonContext>({} as IPokemonContext);
 
 const PokemonContextProvider: React.FC<IPokemonProps> = ({ children }) => {
   const checkIfShiny = () => {
@@ -28,42 +20,74 @@ const PokemonContextProvider: React.FC<IPokemonProps> = ({ children }) => {
     const max = 100;
     const random = Math.random() * (max - min) + min;
 
-    return random < 10 ? true : false;
+    return random < 25 ? true : false;
   };
 
-  const preparePokemon = (pokemonInfos: any): IPokemon => {
+  const getPrice = (height: number, weight: number): number => {
+    return height * weight;
+  };
+
+  // Se for shiny, recebe 50% de desconto
+  const getPriceWithShinyDiscount = (price: number): number => {
+    return price * 0.5;
+  };
+
+  const preparePokemon = (pokemonInfos: IPokemonInfoAPI): IPokemon => {
     const isShiny = checkIfShiny();
 
-    const { name, sprites } = pokemonInfos;
+    const { id, name, sprites, types, height, weight } = pokemonInfos;
 
-    const shinyModifier = isShiny ? "shiny" : "default";
+    const backSprite = isShiny ? sprites.back_shiny : sprites.back_default;
+    const frontSprite = isShiny ? sprites.front_shiny : sprites.front_default;
 
-    const backSprite = sprites[`back_${shinyModifier}`];
-    const frontSprite = sprites[`front_${shinyModifier}`];
+    const finalTypes = types.map(({ type }) => type.name);
 
-    return { name, price: 1900, isShiny, sprites: [frontSprite, backSprite] };
+    const initialPrice = getPrice(height, weight);
+
+    const discount = isShiny ? getPriceWithShinyDiscount(initialPrice) : 0;
+
+    return {
+      id,
+      name,
+      discount,
+      price: initialPrice - discount,
+      isShiny,
+      sprites: [frontSprite, backSprite],
+      types: finalTypes,
+    };
   };
 
-  const getPokemon = async (pokeID: number) => {
-    try {
-      // const response = await api.get(`pokemon/${pokeID}`);
-      // return response.data;
-      return JSON.parse(CharizardMock);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const getAllPokemon = async (page: number = 45) => {
+    const pokemonList = await PokeApi.getPokemonList(page);
 
-  const getAllPokemon = async (page: number = 1) => {
-    const pokemon = [1, 2, 3, 4, 5, 6].map((pokeID) => getPokemon(pokeID));
+    const pokemon = pokemonList.map((pokemon) =>
+      PokeApi.getPokemonByID(PokeApi.getPokeIDFromURL(pokemon.url))
+    );
 
     const pokemonInfos = await Promise.all([...pokemon]);
 
     return pokemonInfos.map((pokemonInfo) => preparePokemon(pokemonInfo));
   };
 
+  const getPokemonByType = async (type: string = "fire", page: number = 1) => {
+    await PokeApi.getTypePokemon(type);
+
+    const types = PokeApi.getPokemonListByType(page).map((pokemonList: any) =>
+      PokeApi.getPokemonByID(PokeApi.getPokeIDFromURL(pokemonList.pokemon.url))
+    );
+
+    const pokemonInfos = await Promise.all([...types]);
+
+    return pokemonInfos.map((pokemonInfo) => preparePokemon(pokemonInfo));
+  };
+
   return (
-    <PokemonContext.Provider value={{ getAllPokemon }}>
+    <PokemonContext.Provider
+      value={{
+        getAllPokemon,
+        getPokemonByType,
+      }}
+    >
       {children}
     </PokemonContext.Provider>
   );

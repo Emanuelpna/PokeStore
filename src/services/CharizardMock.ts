@@ -1,4 +1,5 @@
-const CharizardMock = `{
+const CharizardMock = `
+  {
     "abilities": [
       {
         "ability": {
