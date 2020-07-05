@@ -91,13 +91,13 @@ class PokeApi {
     mock: "list" | "pokemon" = "pokemon"
   ) {
     try {
-      // const response = await api.get(`${endpoint}`);
-      // return response.data;
+      const response = await api.get(`${endpoint}`);
+      return response.data;
 
       /** Puxando o mock para evitar excesso de requisições na PokeAPI durante o hot reload */
-      return await JSON.parse(
-        mock === "list" ? PokemonListMock : CharizardMock
-      );
+      // return await JSON.parse(
+      //   mock === "list" ? PokemonListMock : CharizardMock
+      // );
     } catch (error) {
       throw error;
     }

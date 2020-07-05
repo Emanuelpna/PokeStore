@@ -1,20 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
+
+import S from "./Product.module.css";
 
 import Utils from "../../services/Utils";
 
 import { IPokemon } from "../../contexts/Pokemon";
 
-const Product = ({ id, name, price, sprites, isShiny, types, discount }: IPokemon) => {
+const Product = ({
+  id,
+  name,
+  price,
+  sprites,
+  isShiny,
+  types,
+  discount,
+}: IPokemon) => {
+  const [sprite, setSprite] = useState(0);
+
+  const getNewSprite = () => {
+    return setSprite((sprite + 1) % 2);
+  };
+
   return (
-    <div style={{background: "#000", margin: "20px", width: "450px", marginTop: "50px", color: '#fff'}}>
-      <img style={{marginTop: "-50px", display: "inline-block"}} src={sprites[0]} alt="" />
-      <img style={{marginTop: "-50px", display: "inline-block"}} src={sprites[1]} alt="" />
-      <strong>{name}</strong>
-      <span>{Utils.FormatNumber(price)}</span>
-      <ul>
-        {types.map(type => <li>{type}</li>)}
-      </ul>
-      {isShiny && "  É SHINYYY"}
+    <div className={S.ProductContainer}>
+      <div className={S.ProductDisplay}>
+        <div className={S.ProductSpriteContainer}>
+          <img
+            className={S.ProductSprite}
+            onMouseEnter={getNewSprite}
+            onMouseLeave={getNewSprite}
+            src={sprites[sprite]}
+            alt=""
+          />
+        </div>
+        <div className={S.ProductTitleContainer}>
+          <strong className={S.ProductTitle}>{name}</strong>
+          <ul className={S.ProductTypeList}>
+            {types.map((type, index) => (
+              <li
+                className={`${S.ProductType} ${
+                  types.length > 1 ? "" : S.Single
+                }`}
+                style={{ background: `var(--${type})` }}
+              >
+                {type}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <span className={`${S.ProductPrice}`}>
+        {Utils.FormatNumber(price)}
+      </span>
+
+      {isShiny && <span className={S.Discount}>50% OFF</span>}
+
+      <button className={S.ProductBuyButton}>Adicionar ao Carrinho</button>
     </div>
   );
 };

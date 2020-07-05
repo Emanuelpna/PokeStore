@@ -1,0 +1,11 @@
+.ProductListContainer {
+  display: flex;
+  flex-flow: row wrap;
+  /* background: #fff; */
+  margin: 20px;
+  width: 60%;
+  margin-top: 60px;
+  color: #242428;
+  /* box-shadow: 0 2px 6px #3d3d4f24; */
+  border-radius: 10px;
+}

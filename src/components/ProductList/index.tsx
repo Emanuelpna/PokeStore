@@ -4,6 +4,8 @@ import { PokemonContext } from "../../contexts/PokemonContext";
 
 import Product from "../Product";
 
+import S from "./ProductList.module.css";
+
 const ProductList = () => {
   const { getAllPokemon, getPokemonByType } = useContext(PokemonContext);
 
@@ -11,13 +13,13 @@ const ProductList = () => {
 
   useEffect(() => {
     (async () => {
-      const result = await getAllPokemon(10);
+      const result = await getAllPokemon(50);
       setPokemon(result);
     })();
   }, [getAllPokemon]);
 
   return (
-    <>
+    <section className={S.ProductListContainer}>
       {pokemon.map(
         ({ id, name, sprites, types, price, discount, isShiny }: any) => (
           <Product
@@ -32,7 +34,7 @@ const ProductList = () => {
           />
         )
       )}
-    </>
+    </section>
   );
 };
 

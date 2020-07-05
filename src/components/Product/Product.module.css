@@ -1,0 +1,89 @@
+.ProductContainer {
+  background: #fff;
+  margin: 20px;
+  width: 350px;
+  margin-top: 60px;
+  color: #242428;
+  box-shadow: 0 2px 6px #3d3d4f24;
+  border-radius: 10px;
+}
+
+.ProductSpriteContainer {
+  height: 110px;
+  width: 110px;
+  margin-right: 12px;
+}
+
+.ProductSprite {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  margin-top: -40px;
+}
+
+.ProductDisplay {
+  margin-left: 12px;
+  margin-bottom: -20px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.ProductTitleContainer {
+  margin-top: -40px;
+}
+
+.ProductTitle {
+  text-transform: capitalize;
+  font-size: 1.3rem;
+}
+
+.ProductTypeList {
+  width: 125px;
+}
+
+.ProductType {
+  margin-top: 6px;
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+  padding: 2px;
+  border-radius: 400px 0 0 400px;
+  color: #fff;
+}
+
+.ProductType:nth-of-type(2) {
+  border-radius: 0 400px 400px 0;
+}
+
+.ProductType.Single {
+  width: 80%;
+  border-radius: 400px;
+}
+
+.ProductPrice {
+  font-weight: bold;
+  margin-left: 32px;
+  font-size: 1.5rem;
+}
+
+.Discount {
+  margin-left: 12px;
+  color: #fff;
+  background: #3bc865;
+  border-radius: 400px;
+  padding: 2px 10px;
+}
+
+.ProductBuyButton {
+  display: block;
+  margin-left: auto;
+  margin-top: 20px;
+  background: #3b3bc8;
+  color: #fff;
+  border: none;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border-top-left-radius: 4px;
+  border-bottom-right-radius: 10px;
+}
