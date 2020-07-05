@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+
+import { CartContext } from "../../contexts/CartContext";
 
 import S from "./Product.module.css";
 
@@ -17,8 +19,22 @@ const Product = ({
 }: IPokemon) => {
   const [sprite, setSprite] = useState(0);
 
+  const { changeCartItems } = useContext(CartContext);
+
   const getNewSprite = () => {
     return setSprite((sprite + 1) % 2);
+  };
+
+  const addToCart = () => {
+    changeCartItems({
+      id,
+      name,
+      price,
+      discount,
+      isShiny,
+      sprites,
+      types,
+    }, "ADD");
   };
 
   return (
@@ -38,6 +54,7 @@ const Product = ({
           <ul className={S.ProductTypeList}>
             {types.map((type, index) => (
               <li
+                key={index}
                 className={`${S.ProductType} ${
                   types.length > 1 ? "" : S.Single
                 }`}
@@ -49,13 +66,13 @@ const Product = ({
           </ul>
         </div>
       </div>
-      <span className={`${S.ProductPrice}`}>
-        {Utils.FormatNumber(price)}
-      </span>
+      <span className={`${S.ProductPrice}`}>{Utils.FormatNumber(price)}</span>
 
       {isShiny && <span className={S.Discount}>50% OFF</span>}
 
-      <button className={S.ProductBuyButton}>Adicionar ao Carrinho</button>
+      <button onClick={addToCart} className={S.ProductBuyButton}>
+        Adicionar ao Carrinho
+      </button>
     </div>
   );
 };
