@@ -29,7 +29,6 @@
   padding: 0 12px;
   padding-bottom: 12px;
   font-size: 1.1rem;
-  /* border-bottom: 1px solid #2e2e3933; */
 }
 
 .CartSummaryTitle {
@@ -52,4 +51,36 @@
   width: 80%;
   font-size: 1.2rem;
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .CartContainer {
+    margin-right: 24px;
+  }
+
+  .CartListContainer {
+    height: 650px;
+  }
+
+  .CartSummary {
+    width: 100%;
+  }
+
+  .CartSummaryTitle {
+    margin-top: 0;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .CartContainer {
+    margin-right: 24px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .CartContainer {
+    width: 90%;
+    margin: auto;
+    margin-top: 60px;
+  }
 }

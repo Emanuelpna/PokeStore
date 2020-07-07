@@ -4,3 +4,10 @@
   flex-flow: row nowrap;
   margin: auto;
 }
+
+@media screen and (max-width: 500px) {
+  .LayoutContainer {
+    flex-flow: column nowrap;
+    align-items: center;
+  }
+}

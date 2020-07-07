@@ -42,33 +42,31 @@ const Product = ({
 
   return (
     <div className={S.ProductContainer}>
-      <div className={S.ProductDisplay}>
-        <div className={S.ProductSpriteContainer}>
-          <img
-            className={S.ProductSprite}
-            onMouseEnter={getNewSprite}
-            onMouseLeave={getNewSprite}
-            src={sprites[sprite]}
-            alt=""
-          />
-        </div>
-        <div className={S.ProductTitleContainer}>
-          <strong className={S.ProductTitle}>{name}</strong>
-          <ul className={S.ProductTypeList}>
-            {types.map((type, index) => (
-              <li
-                key={index}
-                className={`${S.ProductType} ${
-                  types.length > 1 ? "" : S.Single
-                }`}
-                style={{ background: `var(--${type})` }}
-              >
-                {type}
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div className={S.ProductSpriteContainer}>
+        <img
+          className={S.ProductSprite}
+          onMouseEnter={getNewSprite}
+          onMouseLeave={getNewSprite}
+          src={sprites[sprite]}
+          alt=""
+        />
       </div>
+
+      <div className={S.ProductTitleContainer}>
+        <strong className={S.ProductTitle}>{name}</strong>
+        <ul className={S.ProductTypeList}>
+          {types.map((type, index) => (
+            <li
+              key={index}
+              className={`${S.ProductType} ${types.length > 1 ? "" : S.Single}`}
+              style={{ background: `var(--${type})` }}
+            >
+              {type}
+            </li>
+          ))}
+        </ul>
+      </div>
+
       <div className={S.ProductInfoContainer}>
         {isShiny && <span className={S.Discount}>50% OFF</span>}
 

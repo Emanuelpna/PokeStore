@@ -9,7 +9,7 @@ import { CartContext } from "../../contexts/CartContext";
 import Utils from "../../services/Utils";
 
 const CartItem = ({ cartItem }: { cartItem: ICartItem }) => {
-//   const [cartQuantity, setCartQuantity] = useState(0);
+  //   const [cartQuantity, setCartQuantity] = useState(0);
 
   const { changeCartItems } = useContext(CartContext);
 
@@ -17,9 +17,9 @@ const CartItem = ({ cartItem }: { cartItem: ICartItem }) => {
     changeCartItems(product, "ADD");
   };
 
-//   const setQuantityForItemOnCart = (product: IPokemon, quantity: number) => {
-//     changeCartItems(product, "SET", quantity);
-//   };
+  //   const setQuantityForItemOnCart = (product: IPokemon, quantity: number) => {
+  //     changeCartItems(product, "SET", quantity);
+  //   };
 
   const removeFromCart = (product: IPokemon) => {
     changeCartItems(product, "REMOVE");
@@ -30,24 +30,14 @@ const CartItem = ({ cartItem }: { cartItem: ICartItem }) => {
       <img src={cartItem.sprites[0]} alt="" />
 
       <div className={S.CartItemInfoContainer}>
-        <div>
-          <span className={S.CartItemTitle}>{cartItem.name}</span> - {cartItem.quantity}x (0 shinys)
-        </div>
-        <div>{Utils.FormatNumber(cartItem.price)}</div>
+        <span className={S.CartItemTitle}>{cartItem.name}</span> -
+        {cartItem.quantity}x
+        <div className={S.CartItemPrice}>{Utils.FormatNumber(cartItem.price)}</div>
       </div>
 
       <button className={S.CartItemButton} onClick={() => addToCart(cartItem)}>
         +
       </button>
-
-      {/* <input
-        type="text"
-        onChange={(e) => {
-          setQuantityForItemOnCart(cartItem, Number(e.target.value));
-          setCartQuantity(Number(e.target.value));
-        }}
-        value={cartQuantity}
-      /> */}
 
       <button
         className={S.CartItemButton}
