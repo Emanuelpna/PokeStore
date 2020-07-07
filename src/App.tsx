@@ -3,6 +3,7 @@ import React from "react";
 import CartContextProvider from "./contexts/CartContext";
 import PageContextProvider from "./contexts/PageContext";
 import PokemonContextProvider from "./contexts/PokemonContext";
+import LoadingContextProvider from "./contexts/LoadingContext";
 
 import Home from "./pages/Home";
 
@@ -13,7 +14,9 @@ function App() {
     <PokemonContextProvider>
       <PageContextProvider>
         <CartContextProvider>
-          <Home />
+          <LoadingContextProvider>
+            <Home />
+          </LoadingContextProvider>
         </CartContextProvider>
       </PageContextProvider>
     </PokemonContextProvider>

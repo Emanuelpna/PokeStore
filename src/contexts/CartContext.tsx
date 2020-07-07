@@ -93,8 +93,26 @@ const CartContextProvider: React.FC<ICartProps> = ({ children }) => {
     });
   };
 
+  const doPayment = () => {
+    const OrderID = Math.random().toString(36).substring(7);
+
+    const payment = {
+      ...cart,
+      date: new Date().toLocaleString(),
+      status: "OK",
+      orderID: OrderID,
+    };
+
+    localStorage.setItem(
+      `Pedido #${OrderID} - PokeStore`,
+      JSON.stringify(payment)
+    );
+
+    setAndSaveCart(emptyCart);
+  };
+
   return (
-    <CartContext.Provider value={{ getCart, changeCartItems }}>
+    <CartContext.Provider value={{ getCart, changeCartItems, doPayment }}>
       {children}
     </CartContext.Provider>
   );

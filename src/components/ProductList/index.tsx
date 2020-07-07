@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState, useMemo } from "react";
 
 import { PageContext } from "../../contexts/PageContext";
 import { PokemonContext } from "../../contexts/PokemonContext";
+import { LoadingContext } from "../../contexts/LoadingContext";
 
 import Product from "../Product";
 import Loading from "../Loading";
@@ -13,41 +14,39 @@ const ProductList = () => {
   const { pokemon, getAllPokemon, getPokemonByType } = useContext(
     PokemonContext
   );
-
+  const { loading, openLoading, closeLoading } = useContext(LoadingContext);
   const { page } = useContext(PageContext);
 
-  const [loading, setLoading] = useState(true);
   const [alreadyFetched, setAlreadyFetched] = useState(false);
 
   const emptyPokemonList = useMemo(
     () => pokemon.length === 0 && alreadyFetched,
     [pokemon, alreadyFetched]
   );
-  const firstLoad = useMemo(() => pokemon.length === 0 && loading, [
-    pokemon,
-    loading,
-  ]);
+
 
   useEffect(() => {
     (async () => {
+      openLoading();
+
       await getAllPokemon(page);
 
-      setLoading(false);
+      closeLoading();
       setAlreadyFetched(true);
 
       console.log(emptyPokemonList);
-      console.log(firstLoad);
+      console.log(loading);
     })();
   }, [page]);
 
   return (
     <section className={S.ProductListContainer}>
-      {firstLoad && !emptyPokemonList && <Loading />}
+      {loading && !emptyPokemonList && <Loading />}
 
-      {!firstLoad && emptyPokemonList && "Lista Vazia"}
+      {!loading && emptyPokemonList && "Lista Vazia"}
 
       {!emptyPokemonList &&
-        !firstLoad &&
+        !loading &&
         pokemon.map(
           ({ id, name, sprites, types, price, discount, isShiny }: any) => (
             <Product

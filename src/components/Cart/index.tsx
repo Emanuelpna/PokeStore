@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useMemo } from "react";
 
 import CartItem from "../CartItem";
+import PaymentSucessfull from "../PaymentSucessfull";
 
 import S from "./Cart.module.css";
 
@@ -10,14 +11,18 @@ import { CartContext } from "../../contexts/CartContext";
 import Utils from "../../services/Utils";
 
 const Cart = () => {
-  const { getCart } = useContext(CartContext);
+  const { getCart, doPayment } = useContext(CartContext);
+
+  const [payment, setPayment] = useState(false);
+
+  const cart = useMemo(() => getCart(), [getCart]);
 
   return (
     <section className={S.CartContainer}>
       <h1 className={S.CartTitle}>Carrinho de Compras</h1>
 
       <ul className={S.CartListContainer}>
-        {getCart().products.map((cartItem: ICartItem) => (
+        {cart.products.map((cartItem: ICartItem) => (
           <>
             <CartItem cartItem={cartItem} />
             {/* <CartItem cartItem={cartItem} />
@@ -32,20 +37,32 @@ const Cart = () => {
       <div className={S.CartSummary}>
         <span className={S.CartSummaryTitle}>Preço:</span>
         <span className={S.CartSummaryValue}>
-          {Utils.FormatNumber(getCart().totalPrice)}
+          {Utils.FormatNumber(cart.totalPrice)}
         </span>
 
-        {getCart().totalDiscount > 0 && (
+        {cart.totalDiscount > 0 && (
           <>
             <span className={S.CartSummaryTitle}>Desconto:</span>
             <span className={S.CartSummaryValue}>
-              {Utils.FormatNumber(getCart().totalDiscount)}
+              {Utils.FormatNumber(cart.totalDiscount)}
             </span>
           </>
         )}
       </div>
 
-      <button className={S.CartButton}>Finalizar Compra</button>
+      <button
+        onClick={() => {
+          if (cart.products.length > 0) {
+            doPayment();
+            setPayment(true);
+          }
+        }}
+        className={S.CartButton}
+      >
+        Finalizar Compra
+      </button>
+
+      {payment && <PaymentSucessfull setPayment={setPayment} />}
     </section>
   );
 };

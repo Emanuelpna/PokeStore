@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 
 import { PageContext } from "../../contexts/PageContext";
 
@@ -6,25 +6,26 @@ import S from "./Pagination.module.css";
 
 const Pagination = () => {
   const { previousPage, nextPage, page, setPage } = useContext(PageContext);
-  
+
+  const isFirstPage = useMemo(() => Number(page) === 1, [page]);
+
   return (
-    <div>
+    <div className={S.PaginationContainer}>
       <button
-        style={{ width: "60px", padding: "10px 12px" }}
-        onClick={previousPage}
+        className={S.PaginationButton}
+        onClick={() => (isFirstPage ? previousPage() : false)}
+        disabled={isFirstPage}
       >
-        {"<"}
+        Página Anterior
       </button>
       <input
+        className={S.PaginationInput}
         type="text"
         onChange={(e) => setPage(Number(e.target.value))}
         value={page}
       />
-      <button
-        style={{ width: "60px", padding: "10px 12px" }}
-        onClick={nextPage}
-      >
-        {">"}
+      <button className={S.PaginationButton} onClick={nextPage}>
+        Próxima Página
       </button>
     </div>
   );

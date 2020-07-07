@@ -1,26 +1,40 @@
 import React, { useState, useContext, FormEvent, useEffect } from "react";
 
 import { PageContext } from "../../contexts/PageContext";
+import { LoadingContext } from "../../contexts/LoadingContext";
 import { PokemonContext } from "../../contexts/PokemonContext";
 
 import S from "./Search.module.css";
 
 const Search = () => {
+  const { openLoading, closeLoading } = useContext(LoadingContext);
   const { getPokemonOrTypeBySearch } = useContext(PokemonContext);
-  const { page } = useContext(PageContext);
+  const { page, setPage } = useContext(PageContext);
 
   const [search, setSearch] = useState("");
 
   const searchPokemonOrType = async (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
 
-    getPokemonOrTypeBySearch(search, page);
+    setPage(1);
+
+    openLoading();
+
+    await getPokemonOrTypeBySearch(search, page);
+
+    closeLoading();
   };
 
   useEffect(() => {
-    if (search) {
-      searchPokemonOrType();
-    }
+    (async () => {
+      if (search) {
+        openLoading();
+
+        await searchPokemonOrType();
+
+        closeLoading();
+      }
+    })();
   }, [page]);
 
   return (

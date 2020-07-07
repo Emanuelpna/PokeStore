@@ -21,4 +21,5 @@ export interface ICartContext {
     action: "ADD" | "REMOVE" | "SET",
     setQuantity?: number
   ): void;
+  doPayment(): void;
 }
