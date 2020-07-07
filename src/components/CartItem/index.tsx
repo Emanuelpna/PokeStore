@@ -3,7 +3,8 @@ import React, { useContext } from "react";
 import S from "./CartItem.module.css";
 
 import { IPokemon } from "../../contexts/Pokemon";
-import { CartContext, ICartItem } from "../../contexts/CartContext";
+import { ICartItem } from "../../contexts/Cart";
+import { CartContext } from "../../contexts/CartContext";
 
 import Utils from "../../services/Utils";
 

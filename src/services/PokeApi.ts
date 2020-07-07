@@ -1,6 +1,7 @@
 import api from "./api";
 import CharizardMock from "./CharizardMock";
 import PokemonListMock from "./PokemonListMock";
+import { resolve } from "dns";
 
 type PokemonListAPI = {
   name: string;
@@ -66,6 +67,7 @@ class PokeApi {
 
       this.pokemonByType = result.pokemon;
 
+      // já pega a primeira página por padrão
       return this.getPokemonListByType(1);
     } catch (error) {
       throw error;
@@ -73,14 +75,13 @@ class PokeApi {
   }
 
   public getPokemonListByType(page: number = 1) {
-    console.log(this);
     if (this.pokemonByType.length === 0) return [];
 
     const offsetResults = this._getOffsetPagination(page);
 
     const newList = this.pokemonByType.filter(
       (_, index) =>
-        index + 1 <= this.pokemonsPerPage * page && index + 1 >= offsetResults
+        index + 1 <= this.pokemonsPerPage * page && index >= offsetResults
     );
 
     return newList;
@@ -88,23 +89,33 @@ class PokeApi {
 
   public async doSearch(searchKey: string) {
     try {
-      this.pokemonByType = [];
+      const pokemonResult = await this._callApi(`pokemon/${searchKey}`);
 
-      const pokemon = this._callApi(`pokemon/${searchKey}`);
-      const type = this._callApi(`type/${searchKey}`);
+      return { searchBy: "pokemon", results: pokemonResult.results };
+    } catch (error) {
+      console.log("error :>>", error);
 
-      const [pokemonResult, typeResult] = await Promise.all([pokemon, type]);
+      try {
+        this.pokemonByType = [];
 
-      if (typeResult && !pokemonResult) {
+        const typeResult = await this._callApi(`type/${searchKey}`);
+
         this.pokemonByType = typeResult.pokemon;
 
-        return this.getPokemonListByType(1);
-      } else {
-        return pokemonResult.results;
+        // já pega a primeira página por padrão
+        return { searchBy: "type", results: this.getPokemonListByType(1) };
+      } catch (error) {
+        console.log("error 2 :>>", error);
       }
-    } catch (error) {
-      throw error;
     }
+  }
+
+  public sleep(ms: number) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, ms);
+    });
   }
 
   private async _callApi(
@@ -112,13 +123,14 @@ class PokeApi {
     mock: "list" | "pokemon" = "pokemon"
   ) {
     try {
-      const response = await api.get(`${endpoint}`);
-      return response.data;
+      // const response = await api.get(`${endpoint}`);
+      // return response.data;
 
       /** Puxando o mock para evitar excesso de requisições na PokeAPI durante o hot reload */
-      // return await JSON.parse(
-      //   mock === "list" ? PokemonListMock : CharizardMock
-      // );
+      await this.sleep(2000)
+      return await JSON.parse(
+        mock === "list" ? PokemonListMock : CharizardMock
+      );
     } catch (error) {
       throw error;
     }

@@ -1,6 +1,7 @@
 import React from "react";
 
 import CartContextProvider from "./contexts/CartContext";
+import PageContextProvider from "./contexts/PageContext";
 import PokemonContextProvider from "./contexts/PokemonContext";
 
 import Home from "./pages/Home";
@@ -10,9 +11,11 @@ import "./styles/global.css";
 function App() {
   return (
     <PokemonContextProvider>
-      <CartContextProvider>
-        <Home />
-      </CartContextProvider>
+      <PageContextProvider>
+        <CartContextProvider>
+          <Home />
+        </CartContextProvider>
+      </PageContextProvider>
     </PokemonContextProvider>
   );
 }

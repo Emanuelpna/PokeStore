@@ -25,6 +25,8 @@ export interface IPokemonInfoAPI {
 }
 
 export interface IPokemonContext {
+  pokemon: IPokemon[];
   getAllPokemon(page?: number): Promise<IPokemon[]>;
   getPokemonByType(type?: string, page?: number): Promise<IPokemon[]>;
+  getPokemonOrTypeBySearch(search: string, page?: number): Promise<IPokemon[]>;
 }

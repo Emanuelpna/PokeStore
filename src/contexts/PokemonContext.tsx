@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { useState, ReactElement } from "react";
 
 import PokeApi from "../services/PokeApi";
 
@@ -13,6 +13,8 @@ export const PokemonContext = React.createContext<IPokemonContext>(
 );
 
 const PokemonContextProvider: React.FC<IPokemonProps> = ({ children }) => {
+  const [pokemon, setPokemon] = useState<any>([]);
+
   const checkIfShiny = () => {
     const min = 0;
     const max = 100;
@@ -55,35 +57,74 @@ const PokemonContextProvider: React.FC<IPokemonProps> = ({ children }) => {
     };
   };
 
+  const getAllFetchsToPokeApi = async (
+    promiseList: Promise<IPokemonInfoAPI>[]
+  ) => {
+    const pokemonInfos = await Promise.all([...promiseList]);
+
+    const finalList = pokemonInfos.map((pokemonInfo) =>
+      preparePokemon(pokemonInfo)
+    );
+
+    setPokemon(finalList);
+
+    return finalList;
+  };
+
   const getAllPokemon = async (page: number = 45) => {
     const pokemonList = await PokeApi.getPokemonList(page);
 
-    const pokemon = pokemonList.map((pokemon) =>
+    const pokemon: Promise<IPokemonInfoAPI>[] = pokemonList.map((pokemon) =>
       PokeApi.getPokemonByID(PokeApi.getPokeIDFromURL(pokemon.url))
     );
 
-    const pokemonInfos = await Promise.all([...pokemon]);
-
-    return pokemonInfos.map((pokemonInfo) => preparePokemon(pokemonInfo));
+    return getAllFetchsToPokeApi(pokemon);
   };
 
   const getPokemonByType = async (type: string = "fire", page: number = 1) => {
     await PokeApi.getTypePokemon(type);
 
-    const types = PokeApi.getPokemonListByType(page).map((pokemonList: any) =>
+    const types: Promise<IPokemonInfoAPI>[] = PokeApi.getPokemonListByType(
+      page
+    ).map((pokemonList: any) =>
       PokeApi.getPokemonByID(PokeApi.getPokeIDFromURL(pokemonList.pokemon.url))
     );
 
-    const pokemonInfos = await Promise.all([...types]);
+    return getAllFetchsToPokeApi(types);
+  };
 
-    return pokemonInfos.map((pokemonInfo) => preparePokemon(pokemonInfo));
+  const getPokemonOrTypeBySearch = async (search: string, page: number = 1) => {
+    const response = await PokeApi.doSearch(search);
+
+    console.log("response :>> ", response);
+
+    if (response === undefined || !response) return [];
+
+    if (response.searchBy === "type") {
+      const pokemonByTypeList =
+        page > 1 ? PokeApi.getPokemonListByType(page) : response.results;
+
+      const types = pokemonByTypeList.map((pokemonList: any) =>
+        PokeApi.getPokemonByID(
+          PokeApi.getPokeIDFromURL(pokemonList.pokemon.url)
+        )
+      );
+
+      console.log("types :>> ", types);
+
+      return getAllFetchsToPokeApi(types);
+    } else {
+      return getAllFetchsToPokeApi(response?.results);
+    }
   };
 
   return (
     <PokemonContext.Provider
       value={{
+        pokemon,
         getAllPokemon,
         getPokemonByType,
+        getPokemonOrTypeBySearch,
       }}
     >
       {children}

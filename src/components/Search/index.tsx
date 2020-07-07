@@ -1,19 +1,27 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, useContext, FormEvent, useEffect } from "react";
+
+import { PageContext } from "../../contexts/PageContext";
+import { PokemonContext } from "../../contexts/PokemonContext";
 
 import S from "./Search.module.css";
 
-import PokeApi from "../../services/PokeApi";
-
 const Search = () => {
+  const { getPokemonOrTypeBySearch } = useContext(PokemonContext);
+  const { page } = useContext(PageContext);
+
   const [search, setSearch] = useState("");
 
-  const searchPokemonOrType = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const searchPokemonOrType = async (e?: FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
 
-    const response = await PokeApi.doSearch(search);
-
-    console.log(response);
+    getPokemonOrTypeBySearch(search, page);
   };
+
+  useEffect(() => {
+    if (search) {
+      searchPokemonOrType();
+    }
+  }, [page]);
 
   return (
     <form
@@ -31,7 +39,9 @@ const Search = () => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <button type="submit" className={S.SearchButton}>Buscar</button>
+      <button type="submit" className={S.SearchButton}>
+        Buscar
+      </button>
     </form>
   );
 };

@@ -1,35 +1,14 @@
-import React, { ReactElement, useState } from "react";
+import React, { useState } from "react";
 
 // import Utils from "../services/Utils";
 // import CharizardMock from "../services/CharizardMock";
 import { IPokemon } from "./Pokemon";
 
+import { ICart, ICartItem, ICartProps, ICartContext } from "./Cart";
+
 export const CartContext = React.createContext<ICartContext>(
   {} as ICartContext
 );
-
-export interface ICartItem extends IPokemon {
-  quantity: number;
-}
-
-interface ICart {
-  products: Array<ICartItem>;
-  totalPrice: number;
-  totalDiscount: number;
-}
-
-interface ICartProps {
-  children: ReactElement;
-}
-
-export interface ICartContext {
-  getCart(): ICart;
-  changeCartItems(
-    products: IPokemon,
-    action: "ADD" | "REMOVE" | "SET",
-    setQuantity?: number
-  ): void;
-}
 
 const CartContextProvider: React.FC<ICartProps> = ({ children }) => {
   const emptyCart = {
