@@ -3,7 +3,7 @@ import React, { useState } from "react";
 // import Utils from "../services/Utils";
 // import CharizardMock from "../services/CharizardMock";
 
-import { IPageContext, IPageProps } from "./Page";
+import { IPageContext, IPageProps, TypeOfPage } from "./Page";
 
 export const PageContext = React.createContext<IPageContext>(
   {} as IPageContext
@@ -11,34 +11,39 @@ export const PageContext = React.createContext<IPageContext>(
 
 const PageContextProvider: React.FC<IPageProps> = ({ children }) => {
   const [page, setPage] = useState(1);
+  const [typeOfPage, setTypeOfPage] = useState<TypeOfPage>("LIST");
 
-  const nextPage = () => {
+  const nextPage = (newTypeOfPage: TypeOfPage) => {
     setPage(page + 1);
 
+    setTypeOfPage(newTypeOfPage ? newTypeOfPage : typeOfPage);
+    
     return true;
   };
 
-  const previousPage = () => {
+  const previousPage = (newTypeOfPage: TypeOfPage = typeOfPage) => {
     const newPage = page === 1 ? page : page - 1;
 
     setPage(newPage);
 
+    setTypeOfPage(newTypeOfPage ? newTypeOfPage : typeOfPage);
+
     return true;
   };
 
-  const setPageNumber = (pageNumber: number) => {
-    if (pageNumber < 1) return false;
-
-    const newPage = pageNumber < 1 ? page : page;
+  const setPageNumber = (pageNumber: number, newTypeOfPage: TypeOfPage = typeOfPage) => {
+    const newPage = pageNumber < 1 ? 1 : pageNumber;
 
     setPage(newPage);
+
+    setTypeOfPage(newTypeOfPage ? newTypeOfPage : typeOfPage);
 
     return true;
   };
 
   return (
     <PageContext.Provider
-      value={{ nextPage, previousPage, setPage, page, setPageNumber }}
+      value={{ nextPage, previousPage, setPage, page, setPageNumber, typeOfPage }}
     >
       {children}
     </PageContext.Provider>

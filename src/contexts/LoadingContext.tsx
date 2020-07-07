@@ -10,12 +10,10 @@ const LoadingContextProvider: React.FC<ILoadingProps> = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
   const openLoading = () => {
-    console.log("openLoading")
     setLoading(true);
   };
  
   const closeLoading = () => {
-    console.log("closeLoading")
     setLoading(false);
   };
 

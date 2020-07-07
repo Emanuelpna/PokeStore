@@ -9,14 +9,16 @@ import S from "./Search.module.css";
 const Search = () => {
   const { openLoading, closeLoading } = useContext(LoadingContext);
   const { getPokemonOrTypeBySearch } = useContext(PokemonContext);
-  const { page, setPage } = useContext(PageContext);
+  const { page, setPageNumber, typeOfPage } = useContext(PageContext);
 
   const [search, setSearch] = useState("");
 
   const searchPokemonOrType = async (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
 
-    setPage(1);
+    if (search.length <= 0) return;
+
+    if (typeOfPage !== "SEARCH") setPageNumber(1, "SEARCH");
 
     openLoading();
 
@@ -27,7 +29,7 @@ const Search = () => {
 
   useEffect(() => {
     (async () => {
-      if (search) {
+      if (search.length > 0 && typeOfPage === "SEARCH") {
         openLoading();
 
         await searchPokemonOrType();

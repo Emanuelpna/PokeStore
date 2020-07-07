@@ -13,7 +13,7 @@ const Pagination = () => {
     <div className={S.PaginationContainer}>
       <button
         className={S.PaginationButton}
-        onClick={() => (isFirstPage ? previousPage() : false)}
+        onClick={() => (!isFirstPage ? previousPage() : false)}
         disabled={isFirstPage}
       >
         Página Anterior
@@ -24,7 +24,12 @@ const Pagination = () => {
         onChange={(e) => setPage(Number(e.target.value))}
         value={page}
       />
-      <button className={S.PaginationButton} onClick={nextPage}>
+      <button
+        className={S.PaginationButton}
+        onClick={() => {
+          nextPage();
+        }}
+      >
         Próxima Página
       </button>
     </div>

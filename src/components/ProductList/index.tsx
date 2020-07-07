@@ -15,7 +15,7 @@ const ProductList = () => {
     PokemonContext
   );
   const { loading, openLoading, closeLoading } = useContext(LoadingContext);
-  const { page } = useContext(PageContext);
+  const { page, typeOfPage } = useContext(PageContext);
 
   const [alreadyFetched, setAlreadyFetched] = useState(false);
 
@@ -27,15 +27,14 @@ const ProductList = () => {
 
   useEffect(() => {
     (async () => {
-      openLoading();
-
-      await getAllPokemon(page);
-
-      closeLoading();
-      setAlreadyFetched(true);
-
-      console.log(emptyPokemonList);
-      console.log(loading);
+      if(typeOfPage === "LIST") {
+        openLoading();
+  
+        await getAllPokemon(page);
+  
+        closeLoading();
+        setAlreadyFetched(true);
+      }
     })();
   }, [page]);
 

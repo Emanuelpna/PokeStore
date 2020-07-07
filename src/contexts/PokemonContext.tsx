@@ -3,6 +3,7 @@ import React, { useState, ReactElement } from "react";
 import PokeApi from "../services/PokeApi";
 
 import { IPokemon, IPokemonInfoAPI, IPokemonContext } from "./Pokemon";
+import Utils from "../services/Utils";
 
 interface IPokemonProps {
   children: ReactElement;
@@ -94,9 +95,7 @@ const PokemonContextProvider: React.FC<IPokemonProps> = ({ children }) => {
   };
 
   const getPokemonOrTypeBySearch = async (search: string, page: number = 1) => {
-    const response = await PokeApi.doSearch(search);
-
-    console.log("response :>> ", response);
+    const response = await PokeApi.doSearch(Utils.NormalizeText(search));
 
     if (response === undefined || !response) return [];
 
@@ -109,8 +108,6 @@ const PokemonContextProvider: React.FC<IPokemonProps> = ({ children }) => {
           PokeApi.getPokeIDFromURL(pokemonList.pokemon.url)
         )
       );
-
-      console.log("types :>> ", types);
 
       return getAllFetchsToPokeApi(types);
     } else {

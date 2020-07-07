@@ -63,8 +63,6 @@ class PokeApi {
 
       const result = await this._callApi(`type/${typeID ? typeID : typeName}`);
 
-      console.log(result);
-
       this.pokemonByType = result.pokemon;
 
       // já pega a primeira página por padrão
@@ -93,8 +91,6 @@ class PokeApi {
 
       return { searchBy: "pokemon", results: pokemonResult.results };
     } catch (error) {
-      console.log("error :>>", error);
-
       try {
         this.pokemonByType = [];
 
@@ -105,7 +101,7 @@ class PokeApi {
         // já pega a primeira página por padrão
         return { searchBy: "type", results: this.getPokemonListByType(1) };
       } catch (error) {
-        console.log("error 2 :>>", error);
+        return { searchBy: "pokemon", results: [] };
       }
     }
   }
@@ -123,14 +119,14 @@ class PokeApi {
     mock: "list" | "pokemon" = "pokemon"
   ) {
     try {
-      // const response = await api.get(`${endpoint}`);
-      // return response.data;
+      const response = await api.get(`${endpoint}`);
+      return response.data;
 
       /** Puxando o mock para evitar excesso de requisições na PokeAPI durante o hot reload */
-      await this.sleep(2000)
-      return await JSON.parse(
-        mock === "list" ? PokemonListMock : CharizardMock
-      );
+      // await this.sleep(2000)
+      // return await JSON.parse(
+      //   mock === "list" ? PokemonListMock : CharizardMock
+      // );
     } catch (error) {
       throw error;
     }
