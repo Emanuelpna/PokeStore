@@ -14,7 +14,7 @@ const ProductList = () => {
     PokemonContext
   );
 
-  const { previousPage, nextPage, page, setPage } = useContext(PageContext);
+  const { page } = useContext(PageContext);
 
   const [loading, setLoading] = useState(true);
   const [alreadyFetched, setAlreadyFetched] = useState(false);
