@@ -86,18 +86,39 @@ class PokeApi {
     return newList;
   }
 
+  public async doSearch(searchKey: string) {
+    try {
+      this.pokemonByType = [];
+
+      const pokemon = this._callApi(`pokemon/${searchKey}`);
+      const type = this._callApi(`type/${searchKey}`);
+
+      const [pokemonResult, typeResult] = await Promise.all([pokemon, type]);
+
+      if (typeResult && !pokemonResult) {
+        this.pokemonByType = typeResult.pokemon;
+
+        return this.getPokemonListByType(1);
+      } else {
+        return pokemonResult.results;
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
   private async _callApi(
     endpoint: string,
     mock: "list" | "pokemon" = "pokemon"
   ) {
     try {
-      // const response = await api.get(`${endpoint}`);
-      // return response.data;
+      const response = await api.get(`${endpoint}`);
+      return response.data;
 
       /** Puxando o mock para evitar excesso de requisições na PokeAPI durante o hot reload */
-      return await JSON.parse(
-        mock === "list" ? PokemonListMock : CharizardMock
-      );
+      // return await JSON.parse(
+      //   mock === "list" ? PokemonListMock : CharizardMock
+      // );
     } catch (error) {
       throw error;
     }

@@ -1,10 +1,6 @@
 import React, { ReactElement } from "react";
 
-import api from "../services/api";
-import Utils from "../services/Utils";
 import PokeApi from "../services/PokeApi";
-import CharizardMock from "../services/CharizardMock";
-import PokemonListMock from "../services/PokemonListMock";
 
 import { IPokemon, IPokemonInfoAPI, IPokemonContext } from "./Pokemon";
 
@@ -12,7 +8,9 @@ interface IPokemonProps {
   children: ReactElement;
 }
 
-export const PokemonContext = React.createContext<IPokemonContext>({} as IPokemonContext);
+export const PokemonContext = React.createContext<IPokemonContext>(
+  {} as IPokemonContext
+);
 
 const PokemonContextProvider: React.FC<IPokemonProps> = ({ children }) => {
   const checkIfShiny = () => {

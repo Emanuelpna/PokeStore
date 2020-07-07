@@ -9,12 +9,28 @@ li {
   list-style: none;
 }
 
+button,
+input {
+  border: none;
+}
+
 body {
-  background: #f5f6ff;
+  background: #e7e8f0;
+}
+
+button {
+  background: var(--main-color);
+  border-radius: 4px;
+  color: #fff;
 }
 
 :root {
-  --normal: #919AA2;
+  --main-color: #3b3bc8;
+  --success-color: #3bc865;
+  --text-color: rgb(40, 35, 58);
+
+  /** Pokemon Types Color */
+  --normal: #919aa2;
   --flying: #98b0e0;
   --fighting: #cf3e69;
   --poison: #ad6ac9;

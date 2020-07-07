@@ -26,15 +26,18 @@ const Product = ({
   };
 
   const addToCart = () => {
-    changeCartItems({
-      id,
-      name,
-      price,
-      discount,
-      isShiny,
-      sprites,
-      types,
-    }, "ADD");
+    changeCartItems(
+      {
+        id,
+        name,
+        price,
+        discount,
+        isShiny,
+        sprites,
+        types,
+      },
+      "ADD"
+    );
   };
 
   return (
@@ -66,13 +69,15 @@ const Product = ({
           </ul>
         </div>
       </div>
-      <span className={`${S.ProductPrice}`}>{Utils.FormatNumber(price)}</span>
+      <div className={S.ProductInfoContainer}>
+        {isShiny && <span className={S.Discount}>50% OFF</span>}
 
-      {isShiny && <span className={S.Discount}>50% OFF</span>}
+        <span className={`${S.ProductPrice}`}>{Utils.FormatNumber(price)}</span>
 
-      <button onClick={addToCart} className={S.ProductBuyButton}>
-        Adicionar ao Carrinho
-      </button>
+        <button onClick={addToCart} className={S.ProductBuyButton}>
+          Comprar
+        </button>
+      </div>
     </div>
   );
 };

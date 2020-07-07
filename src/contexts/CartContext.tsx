@@ -32,15 +32,24 @@ export interface ICartContext {
 }
 
 const CartContextProvider: React.FC<ICartProps> = ({ children }) => {
-  const [cart, setCart] = useState<ICart>({
+  const emptyCart = {
     products: [],
     totalPrice: 0,
     totalDiscount: 0,
-  });
+  };
+
+  const [cart, setCart] = useState<ICart>(emptyCart);
 
   const getCart = () => {
     const savedCart = localStorage.getItem("pokestore-cart");
-    return savedCart ? JSON.parse(savedCart) : cart;
+
+    if (!savedCart) {
+      return emptyCart;
+    }
+
+    const savedCartParsed: ICart = JSON.parse(savedCart);
+
+    return savedCart ? savedCartParsed : cart;
   };
 
   const setAndSaveCart = (newCart: ICart) => {
@@ -53,7 +62,7 @@ const CartContextProvider: React.FC<ICartProps> = ({ children }) => {
     action: "ADD" | "REMOVE" | "SET",
     setQuantity: number = 0
   ) => {
-    const oldProducts = cart.products;
+    const oldProducts = getCart().products;
 
     const repeatedProducts = oldProducts.filter(
       (oldProduct) => oldProduct.id === product.id
