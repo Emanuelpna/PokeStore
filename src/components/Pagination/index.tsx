@@ -4,7 +4,11 @@ import { PageContext } from "../../contexts/PageContext";
 
 import S from "./Pagination.module.css";
 
-const Pagination = () => {
+interface IPaginationProps {
+  isLastPage: boolean;
+}
+
+const Pagination = ({ isLastPage }: IPaginationProps) => {
   const { previousPage, nextPage, page, setPage } = useContext(PageContext);
 
   const isFirstPage = useMemo(() => Number(page) === 1, [page]);
@@ -29,6 +33,7 @@ const Pagination = () => {
         onClick={() => {
           nextPage();
         }}
+        disabled={isLastPage}
       >
         Próxima Página
       </button>

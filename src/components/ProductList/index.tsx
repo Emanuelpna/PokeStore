@@ -80,7 +80,7 @@ const ProductList = () => {
             );
           }
         )}
-      <Pagination />
+      <Pagination isLastPage={!loading && emptyPokemonList}/>
     </section>
   );
 };

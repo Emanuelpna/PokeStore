@@ -1,15 +1,26 @@
 # Pokestore - Desafio Hiring Coders
 
+![Tela inicial da Pokestore](./pokestore-cover.png)
 
-### To Do:
-- [x] Corrigir paginação fazendo busca duas vezes quando muda de página (chama a api pra página 2 normal e dps pega os resultados da página 2 da busca)
+Projeto desenvolvido para um desafio do programa de treinamento Hiring Coders. O desafio consistia na criação de uma loja com carrinho e que fosse integrada com a [PokeApi](https://pokeapi.co).
 
-- [x] Resetar numeração da página quando fizer uma nova busca
+O sistema também poderia ser feito usando algum Framework JS, onde escolhi usar ReactJS com Typescript (por serem duas tecnologias ensinadas durante o treinamento).
 
-- [ ] Continuar com a estilização da paginação e do aviso de lista vazia
+Boa sorte encontrando os Pokemon Shiny, tem surpresinha.
 
-- [ ] Acrescentar aviso de carrinho vazio
+### Funcionalidades Principais
 
-- [x] Acrescentar página final de confirmação de compra
- 
-- [x] Salvar em cache compras feitas
+ - [x] Catálogo de produtos
+
+ - [x] Carrinho lateral
+
+ - [x] Resumo do carrinho
+
+### Funcionalidades Extras
+
+ - [x] Barra de busca para filtrar os Pokémon
+
+ - [x] Modal de obrigado ao finalizar compra
+
+ - [x] Salvar os dados da compra do usuário localmente para não perdê-las ao atualizar a página
+

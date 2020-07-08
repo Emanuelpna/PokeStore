@@ -111,4 +111,8 @@
   .ProductContainer {
     width: 75%;
   }
+  
+  .Only {
+    margin-right: 0;
+  }
 }
