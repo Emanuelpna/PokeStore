@@ -7,7 +7,7 @@ const Footer = () => (
   <footer className={S.FooterContainer}>
     <span className={S.FooterBlocks}>
       Feito por
-      <a href="https://emanuelandrade.netlify.app/">Emanuel Andrade</a>
+      <a href="https://www.emanuelandrade.com.br/">Emanuel Andrade</a>
     </span>
 
     <a
