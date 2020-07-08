@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 
-// import Utils from "../services/Utils";
-// import CharizardMock from "../services/CharizardMock";
-
 import { IPageContext, IPageProps, TypeOfPage } from "./Page";
 
 export const PageContext = React.createContext<IPageContext>(

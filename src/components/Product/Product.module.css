@@ -10,6 +10,10 @@
   border-radius: 10px;
 }
 
+.Only {
+  margin-right: 75%;
+}
+
 .ProductSpriteContainer {
   width: 110px;
   margin-right: 12px;
@@ -89,10 +93,17 @@
   width: 80%;
 }
 
+@media screen and (max-width: 850px) {
+  .ProductContainer {
+    width: 40%;
+    min-width: 170px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .ProductContainer {
     width: 40%;
-    min-width: 200px;
+    min-width: 185px;
   }
 }
 

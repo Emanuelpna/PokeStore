@@ -8,6 +8,10 @@ import Utils from "../../services/Utils";
 
 import { IPokemon } from "../../contexts/Pokemon";
 
+interface IProductProps extends IPokemon {
+  isOnly: boolean;
+}
+
 const Product = ({
   id,
   name,
@@ -16,7 +20,8 @@ const Product = ({
   isShiny,
   types,
   discount,
-}: IPokemon) => {
+  isOnly,
+}: IProductProps) => {
   const [sprite, setSprite] = useState(0);
 
   const { changeCartItems } = useContext(CartContext);
@@ -41,7 +46,7 @@ const Product = ({
   };
 
   return (
-    <div className={S.ProductContainer}>
+    <div className={`${S.ProductContainer} ${isOnly ? S.Only : ""}`}>
       <div className={S.ProductSpriteContainer}>
         <img
           className={S.ProductSprite}

@@ -1,7 +1,4 @@
 import api from "./api";
-import CharizardMock from "./CharizardMock";
-import PokemonListMock from "./PokemonListMock";
-import { resolve } from "dns";
 
 type PokemonListAPI = {
   name: string;
@@ -27,8 +24,7 @@ class PokeApi {
       const offsetResults = this._getOffsetPagination(page);
 
       const result = await this._callApi(
-        `pokemon?offset=${offsetResults}&limit=${this.pokemonsPerPage}`,
-        "list"
+        `pokemon?offset=${offsetResults}&limit=${this.pokemonsPerPage}`
       );
 
       return result.results;
@@ -89,7 +85,9 @@ class PokeApi {
     try {
       const pokemonResult = await this._callApi(`pokemon/${searchKey}`);
 
-      return { searchBy: "pokemon", results: pokemonResult.results };
+      console.log("pokemonResult :>> ", pokemonResult);
+
+      return { searchBy: "pokemon", results: pokemonResult };
     } catch (error) {
       try {
         this.pokemonByType = [];
@@ -114,19 +112,10 @@ class PokeApi {
     });
   }
 
-  private async _callApi(
-    endpoint: string,
-    mock: "list" | "pokemon" = "pokemon"
-  ) {
+  private async _callApi(endpoint: string) {
     try {
       const response = await api.get(`${endpoint}`);
       return response.data;
-
-      /** Puxando o mock para evitar excesso de requisições na PokeAPI durante o hot reload */
-      // await this.sleep(2000)
-      // return await JSON.parse(
-      //   mock === "list" ? PokemonListMock : CharizardMock
-      // );
     } catch (error) {
       throw error;
     }

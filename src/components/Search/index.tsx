@@ -8,7 +8,7 @@ import S from "./Search.module.css";
 
 const Search = () => {
   const { openLoading, closeLoading } = useContext(LoadingContext);
-  const { getPokemonOrTypeBySearch } = useContext(PokemonContext);
+  const { getPokemonOrTypeBySearch, getAllPokemon } = useContext(PokemonContext);
   const { page, setPageNumber, typeOfPage } = useContext(PageContext);
 
   const [search, setSearch] = useState("");
@@ -16,7 +16,7 @@ const Search = () => {
   const searchPokemonOrType = async (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
 
-    if (search.length <= 0) return;
+    if (search.length <= 0) getAllPokemon(1);
 
     if (typeOfPage !== "SEARCH") setPageNumber(1, "SEARCH");
 
@@ -37,6 +37,7 @@ const Search = () => {
         closeLoading();
       }
     })();
+    // eslint-disable-next-line
   }, [page]);
 
   return (
@@ -45,7 +46,7 @@ const Search = () => {
       className={S.SearchContainer}
     >
       <label className={S.SearchLabel} htmlFor="search">
-        Encontre aqui os melhores pokemons
+        PokeStore - Encontre aqui os melhores pokemons
       </label>
       <input
         id="search"

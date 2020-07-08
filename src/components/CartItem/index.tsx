@@ -17,10 +17,6 @@ const CartItem = ({ cartItem }: { cartItem: ICartItem }) => {
     changeCartItems(product, "ADD");
   };
 
-  //   const setQuantityForItemOnCart = (product: IPokemon, quantity: number) => {
-  //     changeCartItems(product, "SET", quantity);
-  //   };
-
   const removeFromCart = (product: IPokemon) => {
     changeCartItems(product, "REMOVE");
   };
@@ -30,7 +26,7 @@ const CartItem = ({ cartItem }: { cartItem: ICartItem }) => {
       <img src={cartItem.sprites[0]} alt="" />
 
       <div className={S.CartItemInfoContainer}>
-        <span className={S.CartItemTitle}>{cartItem.name}</span> -
+        <span className={S.CartItemTitle}>{cartItem.name}</span> - {" "}
         {cartItem.quantity}x
         <div className={S.CartItemPrice}>{Utils.FormatNumber(cartItem.price)}</div>
       </div>

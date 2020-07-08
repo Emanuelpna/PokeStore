@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 
-// import Utils from "../services/Utils";
-// import CharizardMock from "../services/CharizardMock";
 import { IPokemon } from "./Pokemon";
 
-import { ICart, ICartItem, ICartProps, ICartContext } from "./Cart";
+import { ICart, ICartProps, ICartContext } from "./Cart";
 
 export const CartContext = React.createContext<ICartContext>(
   {} as ICartContext
@@ -55,11 +53,19 @@ const CartContextProvider: React.FC<ICartProps> = ({ children }) => {
       );
 
       if (action === "SET") {
-        oldProducts[index].quantity = setQuantity;
+        oldProducts[index] = {
+          ...product,
+          quantity: setQuantity,
+        };
       }
 
       if (action === "ADD") {
-        oldProducts[index].quantity++;
+        const newQuantity = oldProducts[index].quantity + 1;
+
+        oldProducts[index] = {
+          ...product,
+          quantity: newQuantity,
+        };
       }
 
       if (action === "REMOVE") {

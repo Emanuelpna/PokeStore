@@ -21,7 +21,7 @@ const PokemonContextProvider: React.FC<IPokemonProps> = ({ children }) => {
     const max = 100;
     const random = Math.random() * (max - min) + min;
 
-    return random < 25 ? true : false;
+    return random < 1 ? true : false;
   };
 
   const getPrice = (height: number, weight: number): number => {
@@ -72,7 +72,7 @@ const PokemonContextProvider: React.FC<IPokemonProps> = ({ children }) => {
     return finalList;
   };
 
-  const getAllPokemon = async (page: number = 45) => {
+  const getAllPokemon = async (page: number = 1) => {
     const pokemonList = await PokeApi.getPokemonList(page);
 
     const pokemon: Promise<IPokemonInfoAPI>[] = pokemonList.map((pokemon) =>
@@ -111,7 +111,9 @@ const PokemonContextProvider: React.FC<IPokemonProps> = ({ children }) => {
 
       return getAllFetchsToPokeApi(types);
     } else {
-      return getAllFetchsToPokeApi(response?.results);
+      const preparedPokemon = preparePokemon(response.results)
+      setPokemon([preparedPokemon]);
+      return response ? [preparedPokemon] : [];
     }
   };
 
